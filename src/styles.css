@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+:root {
+  --bg-app: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --hover-bg: #f1f5f9;
+}
+
+body.dark-theme {
+  color-scheme: dark;
+  --bg-app: #0f172a;
+  --bg-card: #1e293b;
+  --bg-sidebar: #1e293b;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+  --hover-bg: #334155;
+
+  --mat-sys-surface: #1e293b;
+  --mat-sys-on-surface: #f8fafc;
+  --mat-sys-on-surface-variant: #cbd5e1;
+  --mat-sys-outline: #475569;
+  --mat-sys-surface-container-low: #1e293b;
+  --mat-sys-surface-container: #1e293b;
+  --mat-sys-surface-container-high: #334155;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.cdk-overlay-container {
+  z-index: 1000 !important;
+}
+
+.swal2-container {
+  z-index: 2000 !important;
+}
+
+body.dark-theme .main-content,
+body.dark-theme .login-wrapper,
+body.dark-theme .recuperar-container {
+  background-color: var(--bg-app) !important;
+}
+
+body.dark-theme .mat-mdc-card,
+body.dark-theme .mat-mdc-table,
+body.dark-theme .mat-mdc-dialog-surface {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme .val,
+body.dark-theme .title {
+  color: var(--text-primary) !important;
+}

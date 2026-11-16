@@ -1,12 +1,31 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
+
+import { headerComponent } from './componentes/header/headerComponent';
+import { sidebarComponent } from './componentes/sidebar/sidebarComponent';
+import { AuthService } from './services/authService';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    MatSidenavModule,
+    headerComponent,
+    sidebarComponent
+  ],
   templateUrl: './app.html',
+  styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('Proyectoalmacen2');
+export class AppComponent {
+  sidebarColapsado: boolean = false;
+
+  constructor(public authService: AuthService) {}
+
+  toggleSidebar(): void {
+    this.sidebarColapsado = !this.sidebarColapsado;
+  }
 }

@@ -1,0 +1,56 @@
+<div class="sidebar-wrapper" [class.is-collapsed]="colapsado">
+
+  <!-- Perfil del usuario -->
+  <div class="sidebar-user-card" *ngIf="authService.usuarioActual() as usuario">
+    <div class="avatar-circle">
+      <mat-icon>person</mat-icon>
+    </div>
+    <div class="user-details" *ngIf="!colapsado">
+      <span class="user-name">{{ usuario.nombreCompleto }}</span>
+      <span class="user-role">{{ usuario.rol }}</span>
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <!-- Marca / Logo -->
+  <div class="sidebar-brand">
+    <div class="logo-box">
+      <mat-icon>inventory_2</mat-icon>
+    </div>
+    <span class="brand-title" *ngIf="!colapsado">Almacén App</span>
+  </div>
+
+  <!-- Navegación -->
+  <nav class="sidebar-menu">
+    <mat-nav-list class="nav-list">
+      <a mat-list-item routerLink="/almacen/productos" routerLinkActive="active-link" class="nav-item" [attr.title]="colapsado ? 'Productos' : null">
+        <mat-icon matListItemIcon>format_list_bulleted</mat-icon>
+        <span matListItemTitle *ngIf="!colapsado">Productos</span>
+      </a>
+
+      <a mat-list-item routerLink="/almacen/usuarios" routerLinkActive="active-link" class="nav-item" *appHasRole="['ADMINISTRADOR', 'SUPERVISOR', 'COORDINADOR']" [attr.title]="colapsado ? 'Usuarios' : null">
+        <mat-icon matListItemIcon>group</mat-icon>
+        <span matListItemTitle *ngIf="!colapsado">Usuarios</span>
+      </a>
+
+      <a mat-list-item routerLink="/almacen/perfil" routerLinkActive="active-link" class="nav-item" [attr.title]="colapsado ? 'Mi Perfil' : null">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+        <span matListItemTitle *ngIf="!colapsado">Mi Perfil</span>
+      </a>
+    </mat-nav-list>
+  </nav>
+
+  <!-- Selector de Tema Claro / Oscuro y Cerrar Sesión -->
+  <div class="sidebar-footer">
+    <button mat-button class="btn-theme" (click)="alternarTema()" [attr.title]="colapsado ? (modoOscuro ? 'Modo Claro' : 'Modo Oscuro') : null">
+      <mat-icon>{{ modoOscuro ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      <span *ngIf="!colapsado">{{ modoOscuro ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+    </button>
+
+    <button mat-button class="btn-logout" (click)="logout()" [attr.title]="colapsado ? 'Cerrar Sesión' : null">
+      <mat-icon>logout</mat-icon>
+      <span *ngIf="!colapsado">Cerrar Sesión</span>
+    </button>
+  </div>
+</div>

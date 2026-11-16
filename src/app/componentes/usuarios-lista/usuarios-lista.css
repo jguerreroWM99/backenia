@@ -1,0 +1,112 @@
+.usuarios-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.header-section h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.filter-card, .table-card {
+  padding: 16px;
+  border-radius: 12px !important;
+}
+
+.filter-grid {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 220px;
+  margin-bottom: -1.25em;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.full-width-table {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.rol-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.rol-administrador {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.rol-supervisor {
+  background-color: #e0f2fe;
+  color: #075985;
+}
+
+.rol-coordinador {
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.estado-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.estado-badge.activo {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.estado-badge.inactivo {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.solo-lectura {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.no-data {
+  text-align: center;
+  padding: 24px;
+  color: var(--text-secondary);
+}

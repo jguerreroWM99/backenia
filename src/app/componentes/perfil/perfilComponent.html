@@ -1,0 +1,133 @@
+<div class="perfil-container" *ngIf="usuario() as user">
+  <h2>Mi Perfil de Usuario</h2>
+
+  <div class="perfil-grid">
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-icon matCardAvatar color="primary">badge</mat-icon>
+        <mat-card-title>Información Personal</mat-card-title>
+        <mat-card-subtitle>Detalles de tu cuenta de usuario</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="info-content">
+        <div class="info-details-grid">
+          <div class="info-item">
+            <span class="label">Nombres:</span>
+            <span class="val">{{ user.nombres || 'Sin registrar' }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Apellidos:</span>
+            <span class="val">{{ user.apellidos || 'Sin registrar' }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Nombre de Usuario:</span>
+            <span class="val">{{ user.username }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Documento de Identidad (DNI):</span>
+            <span class="val">{{ user.documentoIdentidad || 'Sin registrar' }}</span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Fecha de Nacimiento:</span>
+            <span class="val">
+              {{ user.fechaNacimiento ? (user.fechaNacimiento | date:'dd/MM/yyyy') : 'Sin registrar' }}
+            </span>
+          </div>
+
+          <div class="info-item">
+            <span class="label">Rol en el Sistema:</span>
+            <span class="val role-badge">{{ user.rol }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="password-card">
+      <mat-card-header>
+        <mat-icon matCardAvatar color="accent">lock_reset</mat-icon>
+        <mat-card-title>Cambiar Contraseña</mat-card-title>
+        <mat-card-subtitle>Actualiza tu clave de acceso</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="password-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Contraseña Actual</mat-label>
+            <input matInput [type]="ocultarPasswordActual ? 'password' : 'text'" formControlName="passwordActual">
+            <button mat-icon-button matSuffix (click)="ocultarPasswordActual = !ocultarPasswordActual" type="button">
+              <mat-icon>{{ocultarPasswordActual ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordForm.get('passwordActual')?.hasError('required')">Requerido</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nueva Contraseña</mat-label>
+            <input matInput [type]="ocultarPasswordNueva ? 'password' : 'text'" formControlName="passwordNueva">
+            <button mat-icon-button matSuffix (click)="ocultarPasswordNueva = !ocultarPasswordNueva" type="button">
+              <mat-icon>{{ocultarPasswordNueva ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordForm.get('passwordNueva')?.hasError('required')">Requerido</mat-error>
+            <mat-error *ngIf="passwordForm.get('passwordNueva')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Confirmar Contraseña</mat-label>
+            <input matInput [type]="ocultarConfirmarPassword ? 'password' : 'text'" formControlName="confirmarPassword">
+            <button mat-icon-button matSuffix (click)="ocultarConfirmarPassword = !ocultarConfirmarPassword" type="button">
+              <mat-icon>{{ocultarConfirmarPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="passwordForm.get('confirmarPassword')?.hasError('required')">Requerido</mat-error>
+            <mat-error *ngIf="passwordForm.get('confirmarPassword')?.hasError('noCoincide')">Las contraseñas no coinciden</mat-error>
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="cargandoPassword()">
+            {{ cargandoPassword() ? 'Actualizando...' : 'Actualizar Clave' }}
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="historial-card">
+    <mat-card-header>
+      <mat-icon matCardAvatar color="primary">history</mat-icon>
+      <mat-card-title>Mi Historial de Movimientos</mat-card-title>
+      <mat-card-subtitle>Registros propios permitidos para el rol {{ user.rol }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <table mat-table [dataSource]="historial()" class="full-width-table">
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let element">{{ element.fechaHora | date:'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="accion">
+          <th mat-header-cell *matHeaderCellDef>Acción</th>
+          <td mat-cell *matCellDef="let element"><strong>{{ element.accion }}</strong></td>
+        </ng-container>
+
+        <ng-container matColumnDef="descripcion">
+          <th mat-header-cell *matHeaderCellDef>Detalle</th>
+          <td mat-cell *matCellDef="let element">{{ element.detalle }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="usuario">
+          <th mat-header-cell *matHeaderCellDef>Usuario</th>
+          <td mat-cell *matCellDef="let element">{{ element.usuarioNombreCompleto }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasHistorial"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasHistorial;"></tr>
+      </table>
+
+      <div *ngIf="historial().length === 0" class="no-data">
+        No tienes registros de historial disponibles.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar Usuario' : 'Registrar Nuevo Usuario' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="usuarioForm" class="dialog-form">
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Nombres</mat-label>
+        <input matInput formControlName="nombres" placeholder="Ej. Juan Carlos">
+        <mat-error *ngIf="usuarioForm.get('nombres')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Apellidos</mat-label>
+        <input matInput formControlName="apellidos" placeholder="Ej. Pérez Gómez">
+        <mat-error *ngIf="usuarioForm.get('apellidos')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Documento de Identidad (DNI)</mat-label>
+        <input matInput formControlName="documentoIdentidad" placeholder="8 a 15 caracteres">
+        <mat-error *ngIf="usuarioForm.get('documentoIdentidad')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="usuarioForm.get('documentoIdentidad')?.hasError('minlength')">Mínimo 8 caracteres</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <input matInput type="date" formControlName="fechaNacimiento">
+        <mat-error *ngIf="usuarioForm.get('fechaNacimiento')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Usuario (Username)</mat-label>
+        <input matInput formControlName="username" placeholder="Ej. jperez" [readonly]="esEdicion">
+        <mat-error *ngIf="usuarioForm.get('username')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="usuarioForm.get('username')?.hasError('minlength')">Mínimo 4 caracteres</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Rol</mat-label>
+        <mat-select formControlName="rol" [disabled]="esEdicion">
+          <mat-option *ngFor="let r of rolesDisponibles" [value]="r">
+            {{ r }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="usuarioForm.get('rol')?.hasError('required')">Requerido</mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="full-width" *ngIf="!esEdicion">
+      <mat-label>Contraseña Inicial</mat-label>
+      <input matInput [type]="ocultarPassword ? 'password' : 'text'" formControlName="password" placeholder="Mínimo 6 caracteres">
+      <button mat-icon-button matSuffix type="button" (click)="ocultarPassword = !ocultarPassword">
+        <mat-icon>{{ ocultarPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="usuarioForm.get('password')?.hasError('required')">Requerido</mat-error>
+      <mat-error *ngIf="usuarioForm.get('password')?.hasError('minlength')">Mínimo 6 caracteres</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()" [disabled]="guardando">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="guardando">
+    {{ guardando ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Crear Usuario') }}
+  </button>
+</mat-dialog-actions>

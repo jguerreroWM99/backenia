@@ -1,0 +1,31 @@
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0284c7;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  position: relative;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+}
+
+.app-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-left: 8px;
+}
+
+.static-profile-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.95;
+  cursor: default;
+  user-select: none;
+}

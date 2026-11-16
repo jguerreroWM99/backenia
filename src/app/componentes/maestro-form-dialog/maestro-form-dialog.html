@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="guardar()" class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width" *ngIf="data.tipo === 'MODELO'">
+      <mat-label>Marca asociada</mat-label>
+      <mat-select formControlName="marcaId">
+        <mat-option *ngFor="let m of data.marcas" [value]="m.id">
+          {{ m.nombre }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('marcaId')?.hasError('required')">
+        Selecciona una marca
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{ etiquetaNombre }}</mat-label>
+      <input matInput formControlName="nombre" [placeholder]="placeholderNombre">
+      <mat-error *ngIf="form.get('nombre')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+      <mat-error *ngIf="form.get('nombre')?.hasError('minlength')">
+        Mínimo 2 caracteres
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="cerrar()" [disabled]="guardando()">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" type="button" (click)="guardar()" [disabled]="guardando()">
+    {{ guardando() ? 'Guardando...' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

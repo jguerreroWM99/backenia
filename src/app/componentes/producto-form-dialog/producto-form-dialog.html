@@ -1,0 +1,73 @@
+<h2 mat-dialog-title>{{ esEdicion ? 'Editar Producto' : 'Registrar Nuevo Producto' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productoForm" class="dialog-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nombre del Producto</mat-label>
+      <input matInput formControlName="nombre" placeholder="Ej. Monitor Dell 27 pulgadas">
+      <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">El nombre es requerido</mat-error>
+      <mat-error *ngIf="productoForm.get('nombre')?.hasError('minlength')">Mínimo 3 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descripción (Opcional)</mat-label>
+      <textarea matInput rows="2" formControlName="descripcion" placeholder="Especificaciones técnicas o detalles"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Categoría</mat-label>
+      <mat-select formControlName="categoriaId">
+        <mat-option *ngFor="let c of categorias()" [value]="c.id">{{ c.nombre }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="productoForm.get('categoriaId')?.hasError('required')">Selecciona una categoría</mat-error>
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Marca</mat-label>
+        <mat-select formControlName="marcaId" (selectionChange)="onMarcaChange($event.value)">
+          <mat-option *ngFor="let m of marcas()" [value]="m.id">{{ m.nombre }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="productoForm.get('marcaId')?.hasError('required')">Selecciona una marca</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="half-width">
+        <mat-label>Modelo</mat-label>
+        <mat-select formControlName="modeloId" [disabled]="!productoForm.get('marcaId')?.value">
+          <mat-option *ngFor="let mod of modelos()" [value]="mod.id">{{ mod.nombre }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="productoForm.get('modeloId')?.hasError('required')">Selecciona un modelo</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="third-width">
+        <mat-label>Precio Unitario (S/)</mat-label>
+        <input matInput type="number" step="0.01" formControlName="precio" placeholder="0.00">
+        <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="productoForm.get('precio')?.hasError('min')">Debe ser mayor a 0</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="third-width">
+        <mat-label>Stock Actual</mat-label>
+        <input matInput type="number" formControlName="stock">
+        <mat-error *ngIf="productoForm.get('stock')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="productoForm.get('stock')?.hasError('min')">No puede ser negativo</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="third-width">
+        <mat-label>Stock Mínimo</mat-label>
+        <input matInput type="number" formControlName="stockMinimo">
+        <mat-error *ngIf="productoForm.get('stockMinimo')?.hasError('required')">Requerido</mat-error>
+        <mat-error *ngIf="productoForm.get('stockMinimo')?.hasError('min')">Mínimo 1</mat-error>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()" [disabled]="guardando()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="guardando()">
+    {{ guardando() ? 'Guardando...' : (esEdicion ? 'Actualizar' : 'Guardar Producto') }}
+  </button>
+</mat-dialog-actions>
